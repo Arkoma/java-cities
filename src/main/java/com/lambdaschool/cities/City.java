@@ -7,7 +7,7 @@ import javax.persistence.Id;
 @Entity
 public class City {
 
-    private static @Id @GeneratedValue Long id;
+    private @Id @GeneratedValue Long id;
     private String cityAndStateName;
     private double medianHomePrice;
     private int affordabilityIndex;
@@ -21,12 +21,12 @@ public class City {
     public City() {
     }
 
-    public static Long getId() {
+    public Long getId() {
         return id;
     }
 
-    public static void setId(Long id) {
-        City.id = id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCityAndStateName() {

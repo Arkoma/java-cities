@@ -33,13 +33,15 @@ public class MessageController {
         for (City c: cities) {
             boolean secret = new Random().nextBoolean();
             final Message message = new Message(c.toString(), c.getAffordabilityIndex(), secret);
+
+            log.info("Sending message . . . ");
             if (message.isSecret()) {
-                rt.convertAndSend(CitiesApplication.QUEUE_NAME_SECRET);
+                rt.convertAndSend(CitiesApplication.QUEUE_NAME_SECRET, message);
             } else  {
                 if(message.getPriority() < 6) {
-                    rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES1);
+                    rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES1, message);
                 } else {
-                    rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES2);
+                    rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES2, message);
                 }
             }
         }
@@ -53,12 +55,12 @@ public class MessageController {
             boolean secret = new Random().nextBoolean();
             final Message message = new Message(c.toString(), c.getAffordabilityIndex(), secret);
             if (message.isSecret()) {
-                rt.convertAndSend(CitiesApplication.QUEUE_NAME_SECRET);
+                rt.convertAndSend(CitiesApplication.QUEUE_NAME_SECRET, message);
             } else {
-                if (c.getMedianHomePrice() > 2000000) {
-                    rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES1);
+                if (c.getMedianHomePrice() > 200000.0) {
+                    rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES1, message);
                 } else {
-                    rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES2);
+                    rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES2, message);
                 }
             }
         }
@@ -72,9 +74,9 @@ public class MessageController {
             boolean secret = new Random().nextBoolean();
             final Message message = new Message(c.toString(), c.getAffordabilityIndex(), secret);
             if (message.isSecret()) {
-                rt.convertAndSend(CitiesApplication.QUEUE_NAME_SECRET);
+                rt.convertAndSend(CitiesApplication.QUEUE_NAME_SECRET, message);
             } else {
-                rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES1);
+                rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES1, message);
             }
         }
     }
