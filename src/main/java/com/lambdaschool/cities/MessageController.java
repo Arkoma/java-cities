@@ -44,4 +44,38 @@ public class MessageController {
             }
         }
     }
+
+    @GetMapping("/homes")
+    public void getCitiesByHomePrice () {
+        ArrayList<City> cities = new ArrayList<>();
+        cities.addAll(repository.findAll());
+        for (City c: cities) {
+            boolean secret = new Random().nextBoolean();
+            final Message message = new Message(c.toString(), c.getAffordabilityIndex(), secret);
+            if (message.isSecret()) {
+                rt.convertAndSend(CitiesApplication.QUEUE_NAME_SECRET);
+            } else {
+                if (c.getMedianHomePrice() > 2000000) {
+                    rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES1);
+                } else {
+                    rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES2);
+                }
+            }
+        }
+    }
+
+    @GetMapping("/names")
+    public void getCitiesByName () {
+        ArrayList<City> cities = new ArrayList<>();
+        cities.addAll(repository.findAll());
+        for (City c: cities) {
+            boolean secret = new Random().nextBoolean();
+            final Message message = new Message(c.toString(), c.getAffordabilityIndex(), secret);
+            if (message.isSecret()) {
+                rt.convertAndSend(CitiesApplication.QUEUE_NAME_SECRET);
+            } else {
+                rt.convertAndSend(CitiesApplication.QUEUE_NAME_CITIES1);
+            }
+        }
+    }
 }
